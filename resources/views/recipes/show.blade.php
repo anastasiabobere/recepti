@@ -7,7 +7,17 @@
 
   <div class="recipe-detail">
     {{-- Header --}}
-    <div class="recipe-detail-img">{{ $recipe->emoji }}</div>
+    <div class="recipe-detail-img">
+  @if($recipe->image_path)
+    <img src="{{ asset('storage/' . $recipe->image_path) }}"
+         alt="{{ $recipe->title }}"
+         style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)">
+  @else
+    <img src="{{ asset('images/placeholder.jpg') }}"
+         alt="Nav attēla"
+         style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)">
+  @endif
+</div>
 
     <div class="recipe-detail-header">
       <div>

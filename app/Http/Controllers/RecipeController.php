@@ -80,22 +80,27 @@ class RecipeController extends Controller
         $this->requireActiveUser();
 
         $data = $request->validate([
-            'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
-            'ingredients'  => 'required|array|min:1',
-            'ingredients.*'=> 'required|string|max:255',
-            'cook_time'    => 'nullable|string|max:100',
-            'emoji'        => 'nullable|string|max:5',
-            'category_id'  => 'required|exists:categories,id',
-            'tags'         => 'nullable|string',   // comma-separated
+            'title'         => 'required|string|max:255',
+            'description'   => 'required|string',
+            'ingredients'   => 'required|array|min:1',
+            'ingredients.*' => 'required|string|max:255',
+            'cook_time'     => 'nullable|string|max:100',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'category_id'   => 'required|exists:categories,id',
+            'tags'          => 'nullable|string',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('recipes', 'public');
+        }
 
         $recipe = Auth::user()->recipes()->create([
             'title'       => $data['title'],
             'description' => $data['description'],
             'ingredients' => $data['ingredients'],
             'cook_time'   => $data['cook_time'] ?? null,
-            'emoji'       => $data['emoji'] ?? '🍽️',
+            'image_path'  => $imagePath,
             'category_id' => $data['category_id'],
         ]);
 
@@ -103,6 +108,48 @@ class RecipeController extends Controller
 
         return redirect()->route('recipes.show', $recipe)
             ->with('success', 'Recepte veiksmīgi pievienota!');
+    }
+
+    /**
+     * PUT /receptes/{recipe}
+     */
+    public function update(Request $request, Recipe $recipe): RedirectResponse
+    {
+        Gate::authorize('update', $recipe);
+
+        $data = $request->validate([
+            'title'         => 'required|string|max:255',
+            'description'   => 'required|string',
+            'ingredients'   => 'required|array|min:1',
+            'ingredients.*' => 'required|string|max:255',
+            'cook_time'     => 'nullable|string|max:100',
+            'image'         => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'category_id'   => 'required|exists:categories,id',
+            'tags'          => 'nullable|string',
+        ]);
+
+        $imagePath = $recipe->image_path;
+        if ($request->hasFile('image')) {
+            // Delete old image if it was user-uploaded (not a seeder path)
+            if ($imagePath && \Illuminate\Support\Facades\Storage::disk('public')->exists($imagePath)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($imagePath);
+            }
+            $imagePath = $request->file('image')->store('recipes', 'public');
+        }
+
+        $recipe->update([
+            'title'       => $data['title'],
+            'description' => $data['description'],
+            'ingredients' => $data['ingredients'],
+            'cook_time'   => $data['cook_time'] ?? null,
+            'image_path'  => $imagePath,
+            'category_id' => $data['category_id'],
+        ]);
+
+        $this->syncTags($recipe, $data['tags'] ?? '');
+
+        return redirect()->route('recipes.show', $recipe)
+            ->with('success', 'Recepte atjaunināta!');
     }
 
     /**
@@ -115,40 +162,7 @@ class RecipeController extends Controller
         $recipe->load('tags');
         return view('recipes.edit', compact('recipe', 'categories'));
     }
-
-    /**
-     * PUT /receptes/{recipe}
-     */
-    public function update(Request $request, Recipe $recipe): RedirectResponse
-    {
-        Gate::authorize('update', $recipe);
-
-        $data = $request->validate([
-            'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
-            'ingredients'  => 'required|array|min:1',
-            'ingredients.*'=> 'required|string|max:255',
-            'cook_time'    => 'nullable|string|max:100',
-            'emoji'        => 'nullable|string|max:5',
-            'category_id'  => 'required|exists:categories,id',
-            'tags'         => 'nullable|string',
-        ]);
-
-        $recipe->update([
-            'title'       => $data['title'],
-            'description' => $data['description'],
-            'ingredients' => $data['ingredients'],
-            'cook_time'   => $data['cook_time'] ?? null,
-            'emoji'       => $data['emoji'] ?? $recipe->emoji,
-            'category_id' => $data['category_id'],
-        ]);
-
-        $this->syncTags($recipe, $data['tags'] ?? '');
-
-        return redirect()->route('recipes.show', $recipe)
-            ->with('success', 'Recepte atjaunināta!');
-    }
-
+    
     /**
      * DELETE /receptes/{recipe}
      */

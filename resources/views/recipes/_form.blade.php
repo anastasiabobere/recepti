@@ -42,10 +42,35 @@
   </div>
 
   <div class="form-group">
-    <label class="form-label" for="emoji">Attēla emocijzīme</label>
-    <input type="text" id="emoji" name="emoji" class="form-input"
-           value="{{ old('emoji', $recipe?->emoji ?? '🍽️') }}"
-           maxlength="5" style="width:80px" placeholder="🥧">
+    <label class="form-label" for="image">Receptes attēls</label>
+
+    {{-- Show current image if editing --}}
+    @if($recipe?->image_path)
+      <div style="margin-bottom:.75rem">
+        <img src="{{ asset('storage/' . $recipe->image_path) }}"
+             alt="Pašreizējais attēls"
+             style="width:200px;height:130px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border)">
+        <div style="font-size:12px;color:var(--text-faint);margin-top:4px">
+          Pašreizējais attēls — augšupielādē jaunu, lai nomainītu
+        </div>
+      </div>
+    @endif
+
+    <input type="file" id="image" name="image" accept="image/jpg,image/jpeg,image/png,image/webp"
+           style="display:none" onchange="previewImage(this)">
+    <label for="image" class="btn btn-secondary" style="cursor:pointer;display:inline-block">
+      Izvēlēties attēlu
+    </label>
+    <span id="imageFileName" style="font-size:13px;color:var(--text-muted);margin-left:.5rem"></span>
+
+    {{-- Preview --}}
+    <div id="imagePreview" style="margin-top:.75rem;display:none">
+      <img id="previewImg"
+           style="width:200px;height:130px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border)">
+    </div>
+    <div style="font-size:12px;color:var(--text-faint);margin-top:4px">
+      JPG, PNG vai WebP — maks. 4MB
+    </div>
   </div>
 </div>
 

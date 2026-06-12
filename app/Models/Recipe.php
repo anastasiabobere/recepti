@@ -13,18 +13,16 @@ class Recipe extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = [
-        'title',
-        'description',
-        'ingredients',
-        'cook_time',
-        'emoji',
-        'image_path',
-        'user_id',
-        'category_id',
-        'is_published',
-    ];
-
+   protected $fillable = [
+    'title',
+    'description',
+    'ingredients',
+    'cook_time',
+    'image_path',
+    'user_id',
+    'category_id',
+    'is_published',
+];
     protected function casts(): array
     {
         return [

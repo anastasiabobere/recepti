@@ -7,8 +7,7 @@
     <a href="{{ route('recipes.index') }}" class="back-btn">&#8592; Atpakaļ</a>
     <h2>Pievienot jaunu recepti</h2>
 
-    <form method="POST" action="{{ route('recipes.store') }}" enctype="multipart/form-data">
-      @csrf
+<form method="POST" action="{{ route('recipes.store') }}" enctype="multipart/form-data">      @csrf
       @include('recipes._form', ['recipe' => null])
       <div class="form-actions">
         <a href="{{ route('recipes.index') }}" class="btn btn-secondary">Atcelt</a>

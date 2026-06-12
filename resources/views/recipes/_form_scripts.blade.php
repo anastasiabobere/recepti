@@ -41,6 +41,18 @@ function addTag(val) {
     renderTags();
   }
 }
+//prieviewing images berfore upload
+function previewImage(input) {
+    const file = input.files[0];
+    if (!file) return;
+    document.getElementById('imageFileName').textContent = file.name;
+    const reader = new FileReader();
+    reader.onload = e => {
+        document.getElementById('previewImg').src = e.target.result;
+        document.getElementById('imagePreview').style.display = '';
+    };
+    reader.readAsDataURL(file);
+}
 
 tagTyper.addEventListener('keydown', e => {
   if (e.key === 'Enter' || e.key === ',') {
