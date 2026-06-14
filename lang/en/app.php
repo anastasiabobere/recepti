@@ -52,7 +52,7 @@ return [
     'ratings_total'      => 'total ratings :count',
 
     // Ratings
-    'ratings_comments'   => 'Ratings & Comments',
+    'ratings_comments'   => 'Ratings and Comments',
     'ratings_count'      => 'ratings',
     'cooked_label'       => 'Cooked it',
     'tasted_label'       => 'Just rated',
@@ -113,6 +113,13 @@ return [
     'unsave_recipe'      => 'Remove from saved',
     'recipe_saved'       => 'Recipe saved to your profile.',
     'recipe_unsaved'     => 'Recipe removed from saved.',
+
+    // Translation
+    'translate_to_en'    => 'Translate to English',
+    'translate_to_lv'    => 'Translate to Latvian',
+    'show_original'      => 'Show original',
+    'translating'        => 'Translating...',
+    'translation_failed' => 'Translation unavailable, try again later.',
 
     // Admin
     'admin_panel'        => 'Administration',

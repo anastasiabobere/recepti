@@ -114,6 +114,13 @@ return [
     'recipe_saved'       => 'Recepte saglabāta tavā profilā.',
     'recipe_unsaved'     => 'Recepte noņemta no saglabātajām.',
 
+    // Translation
+    'translate_to_en'    => 'Tulkot angļu valodā',
+    'translate_to_lv'    => 'Tulkot latviešu valodā',
+    'show_original'      => 'Rādīt oriģinālu',
+    'translating'        => 'Tulko...',
+    'translation_failed' => 'Tulkojums nav pieejams, mēģini vēlreiz.',
+
     // Admin
     'admin_panel'        => 'Administrācija',
     'dashboard'          => 'Kopsavilkums',

@@ -6,6 +6,9 @@ use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\TranslationController;
+
+Route::get('/receptes/{recipe}/translate', [TranslationController::class, 'translate'])->name('recipes.translate');
 
 Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 // ── Public routes ────────────────────────────────────────────────────────────

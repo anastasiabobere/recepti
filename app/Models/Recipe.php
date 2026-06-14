@@ -95,4 +95,23 @@ class Recipe extends Model
     {
         return round($this->comments()->avg('rating') ?? 0, 1);
     }
+
+    /**
+     * Guess recipe language from content (lv if Latvian diacritics present, else en).
+     */
+    public function detectLanguage(): string
+    {
+        $text = $this->title . ' ' . $this->description . ' ' . implode(' ', $this->ingredients ?? []);
+
+        if (preg_match('/[āčēģīķļņšūžĀČĒĢĪĶĻŅŠŪŽ]/u', $text)) {
+            return 'lv';
+        }
+
+        return 'en';
+    }
+
+    public function needsTranslation(string $uiLocale): bool
+    {
+        return $this->detectLanguage() !== $uiLocale;
+    }
 }

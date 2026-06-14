@@ -22,28 +22,30 @@
     <div class="recipe-detail-header">
       <div>
         <div class="recipe-cat-label">{{ $recipe->category->localized_name }}</div>
-        <h1 class="recipe-detail-title">{{ $recipe->title }}</h1>
+        <h1 class="recipe-detail-title" id="recipeTitle">{{ $recipe->title }}</h1>
         <div class="recipe-detail-meta">
-          <span>{{ __('app.by_author') }} <a href="{{ route('users.show', $recipe->user) }}">{{ $recipe->user->name }}</a></span>
+          <span>{{ $recipe->user->name }}</span>
           @if($recipe->cook_time)
             <span>{{ $recipe->cook_time }}</span>
           @endif
           <span>{{ $recipe->created_at->format('d.m.Y') }}</span>
         </div>
-      </div>
-      <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;align-items:center">
-      @auth
-        @if(! auth()->user()->isBlocked())
-          <form method="POST" action="{{ route('recipes.toggle-save', $recipe) }}">
-            @csrf
-            <button type="submit" class="btn {{ $isSaved ? 'btn-secondary' : 'btn-primary' }} btn-sm">
-              {{ $isSaved ? __('app.unsave_recipe') : __('app.save_recipe') }}
-            </button>
-          </form>
+        @if($showTranslate)
+          <button class="btn btn-secondary btn-sm" id="translateBtn"
+                  data-target="{{ $uiLocale }}"
+                  data-label-translate="{{ $uiLocale === 'lv' ? __('app.translate_to_lv') : __('app.translate_to_en') }}"
+                  data-label-revert="{{ __('app.show_original') }}"
+                  data-status-translating="{{ __('app.translating') }}"
+                  data-status-failed="{{ __('app.translation_failed') }}"
+                  onclick="translateRecipe({{ $recipe->id }})" style="margin-top:.5rem">
+            {{ $uiLocale === 'lv' ? __('app.translate_to_lv') : __('app.translate_to_en') }}
+          </button>
+          <span id="translateStatus" style="font-size:13px;color:var(--text-faint);margin-left:.5rem"></span>
         @endif
-      @endauth
+        </div>
+      </div>
       @can('update', $recipe)
-        <div style="display:flex;gap:.5rem">
+        <div style="display:flex;gap:.5rem;margin-top:.75rem">
           <a href="{{ route('recipes.edit', $recipe) }}" class="btn btn-secondary btn-sm">{{ __('app.edit') }}</a>
           <form method="POST" action="{{ route('recipes.destroy', $recipe) }}"
                 onsubmit="return confirm(@json(__('app.confirm_delete_recipe')))">
@@ -52,7 +54,6 @@
           </form>
         </div>
       @endcan
-      </div>
     </div>
 
     {{-- Tags --}}
@@ -67,9 +68,9 @@
     {{-- Ingredients --}}
     <div class="detail-section">
       <h3>{{ __('app.ingredients') }}</h3>
-      <ul class="ingredients-list">
+      <ul class="ingredients-list" id="ingredientsList">
         @foreach($recipe->ingredients as $ingredient)
-          <li><span class="ing-dot"></span>{{ $ingredient }}</li>
+          <li><span class="ing-dot"></span><span class="ing-text">{{ $ingredient }}</span></li>
         @endforeach
       </ul>
     </div>
@@ -77,7 +78,7 @@
     {{-- Description --}}
     <div class="detail-section">
       <h3>{{ __('app.preparation') }}</h3>
-      <div class="recipe-description">{{ $recipe->description }}</div>
+      <div class="recipe-description" id="recipeDescription">{{ $recipe->description }}</div>
     </div>
 
     <hr class="divider">
@@ -225,6 +226,55 @@ function setCookAnswer(val) {
   } else {
     document.getElementById('cookYes').className = 'cook-btn';
     document.getElementById('cookNo').className = 'cook-btn no';
+  }
+}
+let isTranslated = false;
+let originalContent = null;
+
+async function translateRecipe(recipeId) {
+  const btn = document.getElementById('translateBtn');
+  const status = document.getElementById('translateStatus');
+  const target = btn.dataset.target;
+
+  if (isTranslated) {
+    document.getElementById('recipeTitle').textContent = originalContent.title;
+    document.getElementById('recipeDescription').textContent = originalContent.description;
+    document.querySelectorAll('#ingredientsList .ing-text').forEach((el, i) => {
+      el.textContent = originalContent.ingredients[i];
+    });
+    btn.textContent = btn.dataset.labelTranslate;
+    isTranslated = false;
+    status.textContent = '';
+    return;
+  }
+
+  status.textContent = btn.dataset.statusTranslating;
+  btn.disabled = true;
+
+  try {
+    const response = await fetch(`/receptes/${recipeId}/translate?target=${target}`);
+    if (!response.ok) throw new Error('Translation failed');
+    const data = await response.json();
+
+    originalContent = {
+      title: document.getElementById('recipeTitle').textContent,
+      description: document.getElementById('recipeDescription').textContent,
+      ingredients: Array.from(document.querySelectorAll('#ingredientsList .ing-text')).map(el => el.textContent)
+    };
+
+    document.getElementById('recipeTitle').textContent = data.title;
+    document.getElementById('recipeDescription').textContent = data.description;
+    document.querySelectorAll('#ingredientsList .ing-text').forEach((el, i) => {
+      if (data.ingredients[i]) el.textContent = data.ingredients[i];
+    });
+
+    btn.textContent = btn.dataset.labelRevert;
+    isTranslated = true;
+    status.textContent = '';
+  } catch (err) {
+    status.textContent = btn.dataset.statusFailed;
+  } finally {
+    btn.disabled = false;
   }
 }
 </script>

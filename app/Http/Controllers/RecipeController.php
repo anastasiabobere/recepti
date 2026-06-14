@@ -56,12 +56,17 @@ class RecipeController extends Controller
 
         $isSaved = Auth::check() && Auth::user()->hasSaved($recipe);
 
+        $uiLocale = app()->getLocale();
+        $showTranslate = $recipe->needsTranslation($uiLocale);
+
         return view('recipes.show', compact(
             'recipe',
             'cookedComments',
             'otherComments',
             'userHasCommented',
             'isSaved',
+            'showTranslate',
+            'uiLocale',
         ));
     }
 
