@@ -50,6 +50,7 @@ return [
     'rating_count'       => ':count vērtējums|:count vērtējumi',
     'cooked_count_short' => ':count gatavojis',
     'ratings_total'      => 'vērtējumi kopā :count',
+    'save_recipe_action' => 'Saglabāt recepti',
 
     // Ratings
     'ratings_comments'   => 'Vērtējumi un komentāri',
@@ -192,7 +193,7 @@ return [
     'edit_recipe_title'  => 'Rediģēt: :title',
     'add_recipe_page'    => 'Pievienot recepti',
     'save_changes'       => 'Saglabāt izmaiņas',
-    'save_recipe'        => 'Saglabāt recepti',
+
 
     // Auth
     'login_title'        => 'Pieslēgties',

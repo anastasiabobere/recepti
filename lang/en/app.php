@@ -113,6 +113,7 @@ return [
     'unsave_recipe'      => 'Remove from saved',
     'recipe_saved'       => 'Recipe saved to your profile.',
     'recipe_unsaved'     => 'Recipe removed from saved.',
+    'save_recipe_action' => 'Save recipe',
 
     // Translation
     'translate_to_en'    => 'Translate to English',
@@ -192,7 +193,6 @@ return [
     'edit_recipe_title'  => 'Edit: :title',
     'add_recipe_page'    => 'Add recipe',
     'save_changes'       => 'Save changes',
-    'save_recipe'        => 'Save recipe',
 
     // Auth
     'login_title'        => 'Log in',
