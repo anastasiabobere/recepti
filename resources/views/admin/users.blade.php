@@ -1,21 +1,21 @@
 @extends('layouts.app')
-@section('title', 'Admin — Lietotāji')
+@section('title', __('app.admin_panel') . ' — ' . __('app.users'))
 
 @section('content')
 <div class="container" style="padding-top:1.5rem">
   @include('admin._sidebar')
   <div class="admin-content-area">
     <div class="form-card">
-      <h3>Lietotāju pārvaldība</h3>
+      <h3>{{ __('app.users_management') }}</h3>
       <table class="admin-table">
         <thead>
           <tr>
-            <th>Vārds</th>
-            <th>E-pasts</th>
-            <th>Loma</th>
-            <th>Receptes</th>
-            <th>Statuss</th>
-            <th>Darbības</th>
+            <th>{{ __('app.col_name') }}</th>
+            <th>{{ __('app.col_email') }}</th>
+            <th>{{ __('app.col_role') }}</th>
+            <th>{{ __('app.col_recipes') }}</th>
+            <th>{{ __('app.col_status') }}</th>
+            <th>{{ __('app.col_actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -23,11 +23,11 @@
           <tr>
             <td><strong>{{ $user->name }}</strong></td>
             <td>{{ $user->email }}</td>
-            <td>{{ $user->isAdmin() ? '⚙️ Admin' : '👤 Lietotājs' }}</td>
+            <td>{{ $user->isAdmin() ? __('app.role_admin_short') : __('app.role_user_short') }}</td>
             <td>{{ $user->recipes_count }}</td>
             <td>
               <span class="status-badge {{ $user->is_blocked ? 'status-blocked' : 'status-active' }}">
-                {{ $user->is_blocked ? 'Bloķēts' : 'Aktīvs' }}
+                {{ $user->is_blocked ? __('app.blocked') : __('app.active') }}
               </span>
             </td>
             <td>
@@ -35,7 +35,7 @@
                 <form method="POST" action="{{ route('admin.users.toggle-block', $user) }}" style="display:inline">
                   @csrf @method('PATCH')
                   <button class="action-btn {{ $user->is_blocked ? '' : 'danger' }}">
-                    {{ $user->is_blocked ? 'Atbloķēt' : 'Bloķēt' }}
+                    {{ $user->is_blocked ? __('app.unblock') : __('app.block') }}
                   </button>
                 </form>
               @else

@@ -1,5 +1,5 @@
 <div class="add-comment-box">
-  <h4>Atstāt vērtējumu</h4>
+  <h4>{{ __('app.leave_rating') }}</h4>
 
   @if($errors->any())
     <div class="flash flash-error" style="margin-bottom:1rem">
@@ -12,18 +12,17 @@
 
     {{-- KEY QUESTION: Did you cook it? (professor's requirement) --}}
     <div class="cook-question">
-      <span class="cook-icon">🤔</span>
       <div>
-        <div style="font-weight:500;margin-bottom:4px">Vai Tu pats(-i) gatavoji šo recepti?</div>
+        <div style="font-weight:500;margin-bottom:4px">{{ __('app.did_you_cook') }}</div>
         <div style="font-size:13px;color:var(--text-muted);margin-bottom:8px">
-          Tie, kas gatavoja, tiks rādīti pirmie — jo viņu vērtējums ir balstīts pieredzē!
+          {{ __('app.cook_explanation') }}
         </div>
         <div class="cook-toggle">
           <button type="button" class="cook-btn" id="cookYes" onclick="setCookAnswer(true)">
-            ✅ Jā, gatavoju!
+            {{ __('app.yes_cooked') }}
           </button>
           <button type="button" class="cook-btn" id="cookNo" onclick="setCookAnswer(false)">
-            👀 Nē, vērtēju pēc receptes
+            {{ __('app.no_cooked') }}
           </button>
         </div>
       </div>
@@ -33,7 +32,7 @@
 
     {{-- Star rating --}}
     <div class="form-group">
-      <label class="form-label">Vērtējums *</label>
+      <label class="form-label">{{ __('app.rating') }} *</label>
       <div class="star-picker" id="starPicker">
         @for($i = 1; $i <= 5; $i++)
           <span class="star-pick" data-v="{{ $i }}">★</span>
@@ -44,13 +43,13 @@
 
     {{-- Comment text --}}
     <div class="form-group">
-      <label class="form-label" for="content">Komentārs *</label>
+      <label class="form-label" for="content">{{ __('app.comment') }} *</label>
       <textarea name="content" id="content" class="form-textarea"
-                placeholder="Dalies ar savām domām par recepti...">{{ old('content') }}</textarea>
+                placeholder="{{ __('app.comment_placeholder') }}">{{ old('content') }}</textarea>
     </div>
 
     <button type="button" class="btn btn-primary" onclick="validateAndSubmit()">
-      Publicēt vērtējumu
+      {{ __('app.publish_rating') }}
     </button>
   </form>
 </div>
@@ -63,11 +62,11 @@ function validateAndSubmit() {
   const ratingVal    = document.getElementById('ratingInput').value;
 
   if (hasCookedVal === '') {
-    alert('Lūdzu atbildi — vai tu gatavoji šo recepti?');
+    alert(@json(__('app.validate_cook_answer')));
     return;
   }
   if (!ratingVal || ratingVal === '0') {
-    alert('Lūdzu izvēlies vērtējumu (1–5 zvaigznes)!');
+    alert(@json(__('app.validate_rating')));
     return;
   }
   document.getElementById('commentForm').submit();

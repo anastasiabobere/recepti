@@ -5,7 +5,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LanguageController;
 
+Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 // ── Public routes ────────────────────────────────────────────────────────────
 Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
 

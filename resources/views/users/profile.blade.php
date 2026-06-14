@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Mans profils')
+@section('title', __('app.profile_title'))
 
 @section('content')
 <div class="container" style="padding-top:1.5rem">
@@ -15,24 +15,23 @@
         <div class="profile-meta">{{ $user->email }}</div>
         <div class="profile-meta" style="margin-top:4px">
           <span class="role-badge {{ $user->isAdmin() ? 'role-admin' : 'role-user' }}">
-            {{ $user->isAdmin() ? '⚙️ Administrators' : '✅ Reģistrēts lietotājs' }}
+            {{ $user->isAdmin() ? __('app.administrator') : __('app.registered_user') }}
           </span>
-          &nbsp;· Receptes: {{ $recipes->total() }}
+          &nbsp;· {{ __('app.recipes_count_label') }}: {{ $recipes->total() }}
         </div>
       </div>
       <a href="{{ route('recipes.create') }}" class="btn btn-primary" style="margin-left:auto">
-        + Pievienot recepti
+        {{ __('app.add_recipe_btn') }}
       </a>
     </div>
 
-    <h3 class="section-title">Manas receptes</h3>
+    <h3 class="section-title">{{ __('app.my_recipes') }}</h3>
 
     @if($recipes->isEmpty())
       <div class="empty-state">
-        <div class="empty-icon">🍴</div>
-        <p>Vēl nav pievienota neviena recepte.</p>
+        <p>{{ __('app.no_own_recipes') }}</p>
         <a href="{{ route('recipes.create') }}" class="btn btn-primary" style="margin-top:1rem">
-          Pievienot pirmo recepti
+          {{ __('app.add_first_recipe') }}
         </a>
       </div>
     @else

@@ -45,11 +45,11 @@ class DatabaseSeeder extends Seeder
 
         // ── Categories ────────────────────────────────────────────────────
         $uncat   = Category::uncategorized();
-        $deserti = Category::create(['name' => 'Deserti',         'emoji' => '🎂']);
-        $zupas   = Category::create(['name' => 'Zupas',           'emoji' => '🍲']);
-        $brok    = Category::create(['name' => 'Brokastis',       'emoji' => '🥞']);
-        $vegan   = Category::create(['name' => 'Vegāniskie',      'emoji' => '🥗']);
-        $galv    = Category::create(['name' => 'Galvenie ēdieni', 'emoji' => '🍽️']);
+        $deserti = Category::create(['name' => 'Deserti',         'slug' => 'deserti']);
+        $zupas   = Category::create(['name' => 'Zupas',           'slug' => 'zupas']);
+        $brok    = Category::create(['name' => 'Brokastis',       'slug' => 'brokastis']);
+        $vegan   = Category::create(['name' => 'Vegāniskie',      'slug' => 'veganiskie']);
+        $galv    = Category::create(['name' => 'Galvenie ēdieni', 'slug' => 'galvenie-edieni']);
 
         // ── Tags ──────────────────────────────────────────────────────────
         $tags = collect([

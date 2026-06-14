@@ -1,21 +1,21 @@
 @extends('layouts.app')
-@section('title', 'Admin — Receptes')
+@section('title', __('app.admin_panel') . ' — ' . __('app.recipes'))
 
 @section('content')
 <div class="container" style="padding-top:1.5rem">
   @include('admin._sidebar')
   <div class="admin-content-area">
     <div class="form-card">
-      <h3>Visu recepšu pārvaldība</h3>
+      <h3>{{ __('app.recipes_management') }}</h3>
       <table class="admin-table">
         <thead>
           <tr>
-            <th>Recepte</th>
-            <th>Autors</th>
-            <th>Kategorija</th>
-            <th>Status</th>
-            <th>Komentāri</th>
-            <th>Darbības</th>
+            <th>{{ __('app.col_recipe') }}</th>
+            <th>{{ __('app.col_author') }}</th>
+            <th>{{ __('app.col_category') }}</th>
+            <th>{{ __('app.col_status') }}</th>
+            <th>{{ __('app.col_comments') }}</th>
+            <th>{{ __('app.col_actions') }}</th>
           </tr>
         </thead>
         <tbody>
@@ -27,10 +27,10 @@
               </a>
             </td>
             <td>{{ $recipe->user->name }}</td>
-            <td>{{ $recipe->category->emoji }} {{ $recipe->category->name }}</td>
+            <td>{{ $recipe->category->localized_name }}</td>
             <td>
               <span class="status-badge {{ $recipe->is_published ? 'status-active' : 'status-blocked' }}">
-                {{ $recipe->is_published ? 'Publicēta' : 'Paslēpta' }}
+                {{ $recipe->is_published ? __('app.published') : __('app.hidden') }}
               </span>
             </td>
             <td>{{ $recipe->comments_count ?? $recipe->comments->count() }}</td>
@@ -38,13 +38,13 @@
               <form method="POST" action="{{ route('admin.recipes.toggle-publish', $recipe) }}" style="display:inline">
                 @csrf @method('PATCH')
                 <button class="action-btn">
-                  {{ $recipe->is_published ? 'Paslēpt' : 'Publicēt' }}
+                  {{ $recipe->is_published ? __('app.hide') : __('app.publish') }}
                 </button>
               </form>
               <form method="POST" action="{{ route('admin.recipes.delete', $recipe) }}" style="display:inline"
-                    onsubmit="return confirm('Pilnībā dzēst šo recepti?')">
+                    onsubmit="return confirm(@json(__('app.confirm_delete_recipe_admin')))">
                 @csrf @method('DELETE')
-                <button class="action-btn danger">Dzēst</button>
+                <button class="action-btn danger">{{ __('app.delete') }}</button>
               </form>
             </td>
           </tr>

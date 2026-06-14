@@ -1,32 +1,25 @@
 @extends('layouts.app')
-@section('title', 'Admin — Kategorijas')
+@section('title', __('app.admin_panel') . ' — ' . __('app.categories'))
 
 @section('content')
 <div class="container" style="padding-top:1.5rem">
   @include('admin._sidebar')
   <div class="admin-content-area">
     <div class="form-card">
-      <h3>Kategoriju pārvaldība</h3>
+      <h3>{{ __('app.category_management') }}</h3>
 
-      {{-- Professor's requirement: clear warning about what happens to recipes on delete --}}
       <div class="cat-warning">
-        <span>⚠️</span>
         <div>
-          <strong>Svarīgi par kategoriju dzēšanu:</strong><br>
-          Dzēšot kategoriju, kurai ir receptes, tās automātiski tiek pārvietotas uz
-          <strong>"Nekategorizēts"</strong>. Tukšas kategorijas var dzēst droši.
-          Sistēmas kategoriju <strong>"Nekategorizēts"</strong> nevar dzēst.
+          <strong>{{ __('app.category_warning_title') }}</strong><br>
+          {{ __('app.category_warning') }}
         </div>
       </div>
 
-      {{-- Add new category form --}}
       <form method="POST" action="{{ route('admin.categories.store') }}" style="display:flex;gap:.5rem;margin-bottom:1.5rem">
         @csrf
-        <input type="text" name="name" class="form-input" placeholder="Jaunas kategorijas nosaukums"
+        <input type="text" name="name" class="form-input" placeholder="{{ __('app.new_category_name') }}"
                value="{{ old('name') }}" required style="flex:1">
-        <input type="text" name="emoji" class="form-input" placeholder="🍽️"
-               value="{{ old('emoji') }}" maxlength="5" style="width:64px">
-        <button type="submit" class="btn btn-primary">Pievienot</button>
+        <button type="submit" class="btn btn-primary">{{ __('app.add_category') }}</button>
       </form>
 
       @if($errors->any())
@@ -35,22 +28,20 @@
         </div>
       @endif
 
-      {{-- Category list --}}
       <ul class="category-list">
         @foreach($categories as $cat)
           <li class="category-item">
-            <span class="category-emoji">{{ $cat->emoji }}</span>
-            <span class="category-name">{{ $cat->name }}</span>
-            <span class="category-count">{{ $cat->recipes_count }} recepte{{ $cat->recipes_count === 1 ? '' : 's' }}</span>
+            <span class="category-name">{{ $cat->localized_name }}</span>
+            <span class="category-count">{{ trans_choice('app.recipes_in_category', $cat->recipes_count, ['count' => $cat->recipes_count]) }}</span>
 
             @if($cat->isUncategorized())
-              <span style="font-size:11px;color:var(--text-faint);margin-left:auto">sistēmas</span>
+              <span style="font-size:11px;color:var(--text-faint);margin-left:auto">{{ __('app.system_category') }}</span>
             @else
               <form method="POST" action="{{ route('admin.categories.delete', $cat) }}"
-                    onsubmit="return confirmCategoryDelete({{ $cat->recipes_count }}, '{{ $cat->name }}')"
+                    onsubmit="return confirmCategoryDelete({{ $cat->recipes_count }}, @json($cat->localized_name))"
                     style="margin-left:auto">
                 @csrf @method('DELETE')
-                <button class="action-btn danger">Dzēst</button>
+                <button class="action-btn danger">{{ __('app.delete') }}</button>
               </form>
             @endif
           </li>
@@ -63,14 +54,18 @@
 
 @push('scripts')
 <script>
+const confirmCategoryDeleteWithRecipes = @json(__('app.confirm_category_delete_with_recipes'));
+const confirmCategoryDeleteEmpty = @json(__('app.confirm_category_delete'));
+
 function confirmCategoryDelete(recipeCount, catName) {
   if (recipeCount > 0) {
     return confirm(
-      `Kategorijā "${catName}" ir ${recipeCount} recepte(s).\n\n` +
-      `Tās tiks pārvietotas uz "Nekategorizēts".\n\nVai turpināt?`
+      confirmCategoryDeleteWithRecipes
+        .replace(':name', catName)
+        .replace(':count', recipeCount)
     );
   }
-  return confirm(`Vai dzēst kategoriju "${catName}"?`);
+  return confirm(confirmCategoryDeleteEmpty.replace(':name', catName));
 }
 </script>
 @endpush

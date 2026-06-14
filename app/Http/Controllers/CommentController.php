@@ -18,11 +18,11 @@ class CommentController extends Controller
     public function store(Request $request, Recipe $recipe): RedirectResponse
     {
         abort_if(! Auth::check(), 401);
-        abort_if(Auth::user()->isBlocked(), 403, 'Jūsu konts ir bloķēts.');
+        abort_if(Auth::user()->isBlocked(), 403, __('app.account_blocked'));
 
         // Prevent double-commenting
         if (Auth::user()->hasCommentedOn($recipe)) {
-            return back()->with('error', 'Jūs jau esat atstājis vērtējumu šai receptei.');
+            return back()->with('error', __('app.already_commented'));
         }
 
         $data = $request->validate([
@@ -38,7 +38,7 @@ class CommentController extends Controller
             'has_cooked' => $data['has_cooked'],
         ]);
 
-        return back()->with('success', 'Vērtējums pievienots! Paldies!');
+        return back()->with('success', __('app.rating_added'));
     }
 
     /**
@@ -56,6 +56,6 @@ class CommentController extends Controller
         $recipeId = $comment->recipe_id;
         $comment->delete();
 
-        return back()->with('success', 'Komentārs izdzēsts.');
+        return back()->with('success', __('app.comment_deleted'));
     }
 }

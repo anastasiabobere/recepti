@@ -25,7 +25,7 @@ class AuthenticatedSessionController extends Controller
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
-                'email' => 'Nepareizs e-pasts vai parole.',
+                'email' => __('app.invalid_credentials'),
             ]);
         }
 
@@ -33,14 +33,14 @@ class AuthenticatedSessionController extends Controller
         if (Auth::user()->isBlocked()) {
             Auth::logout();
             throw ValidationException::withMessages([
-                'email' => 'Jūsu konts ir bloķēts. Sazinieties ar administratoru.',
+                'email' => __('app.account_blocked_contact'),
             ]);
         }
 
         $request->session()->regenerate();
 
         return redirect()->intended(route('recipes.index'))
-            ->with('success', 'Laipni lūgti, ' . Auth::user()->name . '!');
+            ->with('success', __('app.welcome_back', ['name' => Auth::user()->name]));
     }
 
     public function destroy(Request $request): RedirectResponse

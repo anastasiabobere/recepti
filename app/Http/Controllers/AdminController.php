@@ -44,7 +44,9 @@ class AdminController extends Controller
 
     public function categories(): View
     {
-        $categories = Category::withCount('recipes')->orderBy('name')->get();
+        $categories = Category::withCount('recipes')->get()
+            ->sortBy(fn ($cat) => $cat->localized_name)
+            ->values();
         return view('admin.categories', compact('categories'));
     }
 
@@ -52,9 +54,11 @@ class AdminController extends Controller
 
     public function toggleBlock(User $user): RedirectResponse
     {
-        abort_if($user->isAdmin(), 403, 'Nevar bloķēt administratoru.');
+        abort_if($user->isAdmin(), 403, __('app.cannot_block_admin'));
         $user->update(['is_blocked' => ! $user->is_blocked]);
-        $msg = $user->is_blocked ? "{$user->name} bloķēts." : "{$user->name} atbloķēts.";
+        $msg = $user->is_blocked
+            ? __('app.user_blocked', ['name' => $user->name])
+            : __('app.user_unblocked', ['name' => $user->name]);
         return back()->with('success', $msg);
     }
 
@@ -63,13 +67,13 @@ class AdminController extends Controller
     public function deleteRecipe(Recipe $recipe): RedirectResponse
     {
         $recipe->forceDelete();
-        return back()->with('success', 'Recepte pilnībā izdzēsta.');
+        return back()->with('success', __('app.recipe_deleted_admin'));
     }
 
     public function togglePublish(Recipe $recipe): RedirectResponse
     {
         $recipe->update(['is_published' => ! $recipe->is_published]);
-        return back()->with('success', $recipe->is_published ? 'Recepte publicēta.' : 'Recepte paslēpta.');
+        return back()->with('success', $recipe->is_published ? __('app.recipe_published') : __('app.recipe_hidden'));
     }
 
     // ── Comment moderation ───────────────────────────────────────────────────
@@ -77,7 +81,7 @@ class AdminController extends Controller
     public function deleteComment(Comment $comment): RedirectResponse
     {
         $comment->delete();
-        return back()->with('success', 'Komentārs izdzēsts.');
+        return back()->with('success', __('app.comment_deleted'));
     }
 
     // ── Category management ──────────────────────────────────────────────────
@@ -86,13 +90,11 @@ class AdminController extends Controller
     {
         $data = $request->validate([
             'name'  => 'required|string|max:100|unique:categories,name',
-            'emoji' => 'nullable|string|max:5',
         ]);
         Category::create([
             'name'  => $data['name'],
-            'emoji' => $data['emoji'] ?? '🍽️',
         ]);
-        return back()->with('success', "Kategorija \"{$data['name']}\" pievienota!");
+        return back()->with('success', __('app.category_added', ['name' => $data['name']]));
     }
 
     /**
@@ -106,7 +108,7 @@ class AdminController extends Controller
     public function deleteCategory(Category $category): RedirectResponse
     {
         if ($category->isUncategorized()) {
-            return back()->with('error', 'Sistēmas kategoriju "Nekategorizēts" nevar dzēst.');
+            return back()->with('error', __('app.cannot_delete_uncategorized'));
         }
 
         $recipeCount = $category->recipes()->count();
@@ -120,8 +122,8 @@ class AdminController extends Controller
         $category->delete();
 
         $msg = $recipeCount > 0
-            ? "Kategorija izdzēsta. {$recipeCount} recepte(-s) pārvietotas uz \"Nekategorizēts\"."
-            : 'Kategorija izdzēsta.';
+            ? __('app.category_deleted_with_recipes', ['count' => $recipeCount])
+            : __('app.category_deleted');
 
         return back()->with('success', $msg);
     }

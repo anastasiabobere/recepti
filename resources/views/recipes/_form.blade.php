@@ -12,46 +12,46 @@
 
 {{-- Basic info --}}
 <div class="form-card">
-  <h3>Pamatinformācija</h3>
+  <h3>{{ __('app.basic_info') }}</h3>
 
   <div class="form-group">
-    <label class="form-label" for="title">Receptes nosaukums *</label>
+    <label class="form-label" for="title">{{ __('app.recipe_title') }} *</label>
     <input type="text" id="title" name="title" class="form-input"
            value="{{ old('title', $recipe?->title) }}"
-           placeholder="piem. Mājas ābolu pīrāgs ar kanēli" required>
+           placeholder="{{ __('app.recipe_title_placeholder') }}" required>
   </div>
 
   <div class="form-row">
     <div class="form-group">
-      <label class="form-label" for="category_id">Kategorija *</label>
+      <label class="form-label" for="category_id">{{ __('app.choose_category') }} *</label>
       <select id="category_id" name="category_id" class="form-select" required>
         @foreach($categories as $cat)
           <option value="{{ $cat->id }}"
             {{ old('category_id', $recipe?->category_id) == $cat->id ? 'selected' : '' }}>
-            {{ $cat->emoji }} {{ $cat->name }}
+            {{ $cat->localized_name }}
           </option>
         @endforeach
       </select>
     </div>
     <div class="form-group">
-      <label class="form-label" for="cook_time">Gatavošanas laiks</label>
+      <label class="form-label" for="cook_time">{{ __('app.cook_time') }}</label>
       <input type="text" id="cook_time" name="cook_time" class="form-input"
              value="{{ old('cook_time', $recipe?->cook_time) }}"
-             placeholder="piem. 45 min">
+             placeholder="{{ __('app.cook_time_placeholder') }}">
     </div>
   </div>
 
   <div class="form-group">
-    <label class="form-label" for="image">Receptes attēls</label>
+    <label class="form-label" for="image">{{ __('app.recipe_image') }}</label>
 
     {{-- Show current image if editing --}}
     @if($recipe?->image_path)
       <div style="margin-bottom:.75rem">
         <img src="{{ asset('storage/' . $recipe->image_path) }}"
-             alt="Pašreizējais attēls"
+             alt="{{ __('app.current_image_alt') }}"
              style="width:200px;height:130px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border)">
         <div style="font-size:12px;color:var(--text-faint);margin-top:4px">
-          Pašreizējais attēls — augšupielādē jaunu, lai nomainītu
+          {{ __('app.current_image_note') }}
         </div>
       </div>
     @endif
@@ -59,7 +59,7 @@
     <input type="file" id="image" name="image" accept="image/jpg,image/jpeg,image/png,image/webp"
            style="display:none" onchange="previewImage(this)">
     <label for="image" class="btn btn-secondary" style="cursor:pointer;display:inline-block">
-      Izvēlēties attēlu
+      {{ __('app.choose_image') }}
     </label>
     <span id="imageFileName" style="font-size:13px;color:var(--text-muted);margin-left:.5rem"></span>
 
@@ -69,14 +69,14 @@
            style="width:200px;height:130px;object-fit:cover;border-radius:var(--radius);border:1px solid var(--border)">
     </div>
     <div style="font-size:12px;color:var(--text-faint);margin-top:4px">
-      JPG, PNG vai WebP — maks. 4MB
+      {{ __('app.image_hint') }}
     </div>
   </div>
 </div>
 
 {{-- Ingredients --}}
 <div class="form-card">
-  <h3>Sastāvdaļas</h3>
+  <h3>{{ __('app.ingredients') }}</h3>
   <div id="ingredientsList">
     @php
       $ingredients = old('ingredients', $recipe?->ingredients ?? ['']);
@@ -84,35 +84,35 @@
     @foreach($ingredients as $ing)
       <div class="ingredient-row">
         <input type="text" name="ingredients[]" class="form-input"
-               value="{{ $ing }}" placeholder="piem. 200g miltu">
+               value="{{ $ing }}" placeholder="{{ __('app.ingredient_placeholder') }}">
         <button type="button" class="btn btn-secondary btn-sm ing-remove">✕</button>
       </div>
     @endforeach
   </div>
   <button type="button" class="btn btn-secondary btn-sm" id="addIngredient" style="margin-top:.5rem">
-    + Pievienot sastāvdaļu
+    {{ __('app.add_ingredient') }}
   </button>
 </div>
 
 {{-- Description --}}
 <div class="form-card">
-  <h3>Apraksts un pagatavošana</h3>
+  <h3>{{ __('app.description_section') }}</h3>
   <div class="form-group">
-    <label class="form-label" for="description">Receptes apraksts / instrukcija *</label>
+    <label class="form-label" for="description">{{ __('app.description_instruction') }} *</label>
     <textarea id="description" name="description" class="form-textarea"
               rows="8" required
-              placeholder="Apraksti soļus soli pa solim...">{{ old('description', $recipe?->description) }}</textarea>
+              placeholder="{{ __('app.description_placeholder') }}">{{ old('description', $recipe?->description) }}</textarea>
   </div>
 </div>
 
 {{-- Tags --}}
 <div class="form-card">
-  <h3>Atslēgas vārdi</h3>
-  <p class="form-hint">Ievadi atslēgvārdus atdalītus ar komatu.</p>
+  <h3>{{ __('app.tags') }}</h3>
+  <p class="form-hint">{{ __('app.tags_hint') }}</p>
   <div class="form-group">
     <div class="tags-input-area" id="tagsArea">
       {{-- Pills rendered by JS from hidden input --}}
-      <input type="text" id="tagTyper" class="tag-type" placeholder="piem. vegānisks, ātri...">
+      <input type="text" id="tagTyper" class="tag-type" placeholder="{{ __('app.tags_placeholder') }}">
     </div>
     {{-- The actual submitted value --}}
     <input type="hidden" id="tagsHidden" name="tags"

@@ -37,6 +37,6 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect()->route('recipes.index')
-            ->with('success', 'Konts izveidots! Laipni lūgti, ' . $user->name . '!');
+            ->with('success', __('app.account_created', ['name' => $user->name]));
     }
 }

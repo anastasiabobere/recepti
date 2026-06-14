@@ -15,13 +15,13 @@
       </div>
     </div>
     <span class="comment-cooked-badge {{ $comment->has_cooked ? 'badge-cooked' : 'badge-tasted' }}">
-      {{ $comment->has_cooked ? '🍳 Gatavojis' : '👁 Apskatījis' }}
+      {{ $comment->has_cooked ? __('app.badge_cooked') : __('app.badge_tasted') }}
     </span>
     @auth
       @if(auth()->user()->isAdmin() || auth()->id() === $comment->user_id)
         <form method="POST" action="{{ route('comments.destroy', $comment) }}" style="margin-left:auto">
           @csrf @method('DELETE')
-          <button class="action-btn danger" onclick="return confirm('Dzēst komentāru?')">Dzēst</button>
+          <button class="action-btn danger" onclick="return confirm(@json(__('app.confirm_delete_comment')))">{{ __('app.delete') }}</button>
         </form>
       @endif
     @endauth

@@ -1,10 +1,12 @@
 @push('scripts')
 <script>
+const ingredientPlaceholder = @json(__('app.ingredient_placeholder'));
+
 // ── Ingredients ──────────────────────────────────────────────────────────────
 document.getElementById('addIngredient').addEventListener('click', () => {
   const row = document.createElement('div');
   row.className = 'ingredient-row';
-  row.innerHTML = `<input type="text" name="ingredients[]" class="form-input" placeholder="piem. 200g miltu">
+  row.innerHTML = `<input type="text" name="ingredients[]" class="form-input" placeholder="${ingredientPlaceholder}">
                    <button type="button" class="btn btn-secondary btn-sm ing-remove">✕</button>`;
   document.getElementById('ingredientsList').appendChild(row);
 });

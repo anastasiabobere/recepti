@@ -1,25 +1,25 @@
 @extends('layouts.app')
-@section('title', 'Receptes')
+@section('title', __('app.page_title_recipes'))
 
 @section('content')
 {{-- Hero --}}
 <div class="hero">
   <div class="container">
-    <h1>Atklāj <em>garšas</em> pasauli</h1>
-    <p>Dalies ar savām receptēm un atklāj citu iedvesmu — no vienkāršām brokastīm līdz izsmalcinātiem šedevriem.</p>
+    <h1>{!! __('app.hero_title', ['word' => '<em>' . __('app.hero_word') . '</em>']) !!}</h1>
+    <p>{{ __('app.hero_subtitle') }}</p>
   </div>
 </div>
 
 <div class="container" style="padding-top:1.5rem">
   {{-- Category filter chips --}}
   <div class="filter-bar">
-    <span class="filter-label">Kategorija:</span>
+    <span class="filter-label">{{ __('app.category') }}:</span>
     <a href="{{ route('recipes.index', array_filter(['search' => $search])) }}"
-       class="filter-chip {{ ! $categorySlug ? 'active' : '' }}">Visas</a>
+       class="filter-chip {{ ! $categorySlug ? 'active' : '' }}">{{ __('app.all') }}</a>
     @foreach($categories as $cat)
       <a href="{{ route('recipes.index', array_filter(['category' => $cat->slug, 'search' => $search])) }}"
          class="filter-chip {{ $categorySlug === $cat->slug ? 'active' : '' }}">
-        {{ $cat->emoji }} {{ $cat->name }}
+        {{ $cat->localized_name }}
         <span class="chip-count">{{ $cat->recipes_count }}</span>
       </a>
     @endforeach
@@ -27,16 +27,15 @@
 
   @if($search)
     <div class="info-box">
-      Meklēšanas rezultāti "<strong>{{ $search }}</strong>": atrast{{ $recipes->total() === 1 ? 'a' : 'as' }} {{ $recipes->total() }} recepte{{ $recipes->total() === 1 ? '' : 's' }}.
-      <a href="{{ route('recipes.index') }}">Notīrīt</a>
+      {{ trans_choice('app.search_results', $recipes->total(), ['term' => $search, 'count' => $recipes->total()]) }}
+      <a href="{{ route('recipes.index') }}">{{ __('app.clear') }}</a>
     </div>
   @endif
 
   {{-- Recipe grid --}}
   @if($recipes->isEmpty())
     <div class="empty-state">
-      <div class="empty-icon">🍽️</div>
-      <p>Nav atrasta neviena recepte.</p>
+      <p>{{ __('app.no_recipes') }}</p>
     </div>
   @else
     <div class="recipes-grid">

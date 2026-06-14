@@ -11,7 +11,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->unique();
-            $table->string('emoji', 10)->default('🍽️');
+            $table->string('emoji', 10)->default('');
             $table->string('slug')->unique();
             $table->timestamps();
         });

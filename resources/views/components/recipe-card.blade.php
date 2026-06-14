@@ -17,15 +17,15 @@
            style="width:100%;height:100%;object-fit:cover">
     @else
       <img src="{{ asset('images/placeholder.jpg') }}"
-           alt="Nav attēla"
+           alt="{{ __('app.no_image') }}"
            style="width:100%;height:100%;object-fit:cover">
     @endif
   </div>
   <div class="recipe-card-body">
-    <div class="recipe-card-cat">{{ $recipe->category->emoji }} {{ $recipe->category->name }}</div>
+    <div class="recipe-card-cat">{{ $recipe->category->localized_name }}</div>
     <div class="recipe-card-title">{{ $recipe->title }}</div>
     <div class="recipe-card-meta">
-      <span>👤 {{ $recipe->user->name }}</span>
+      <span>{{ $recipe->user->name }}</span>
       @if($recipe->cook_time)
         <span>{{ $recipe->cook_time }}</span>
       @endif
@@ -33,13 +33,13 @@
     @if($cookedComments->count())
       <div class="rating-line">
         <span style="color:var(--gold)">{{ $cookedStars }}</span>
-        <span class="rating-cooked"> {{ $cookedComments->count() }} gatavojis</span>
+        <span class="rating-cooked"> {{ trans_choice('app.cooked_count_short', $cookedComments->count(), ['count' => $cookedComments->count()]) }}</span>
       </div>
     @endif
     @if($allRated->count() > $cookedComments->count())
       <div class="rating-line">
         <span style="color:var(--text-faint)">{{ $allStars }}</span>
-        <span class="rating-all">vertējumi kopā {{ $allRated->count() }}</span>
+        <span class="rating-all">{{ __('app.ratings_total', ['count' => $allRated->count()]) }}</span>
       </div>
     @endif
     @if($recipe->tags->count())

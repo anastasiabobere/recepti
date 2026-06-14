@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    protected $fillable = ['name', 'emoji', 'slug'];
+    protected $fillable = ['name', 'slug'];
 
     protected static function booted(): void
     {
@@ -34,8 +34,20 @@ class Category extends Model
     {
         return static::firstOrCreate(
             ['slug' => 'nekategorizets'],
-            ['name' => 'Nekategorizēts', 'emoji' => '📋']
+            ['name' => 'Nekategorizēts']
         );
+    }
+
+    public function getLocalizedNameAttribute(): string
+    {
+        if (! $this->slug) {
+            return $this->name;
+        }
+
+        $key = 'categories.' . $this->slug;
+        $translated = __($key);
+
+        return $translated !== $key ? $translated : $this->name;
     }
 
     public function isUncategorized(): bool

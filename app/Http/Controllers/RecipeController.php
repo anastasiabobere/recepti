@@ -32,7 +32,9 @@ class RecipeController extends Controller
         }
 
         $recipes    = $query->latest()->paginate(12)->withQueryString();
-        $categories = Category::withCount('recipes')->get();
+        $categories = Category::withCount('recipes')->get()
+            ->sortBy(fn ($cat) => $cat->localized_name)
+            ->values();
 
         return view('recipes.index', compact('recipes', 'categories', 'search', 'categorySlug'));
     }
@@ -68,7 +70,7 @@ class RecipeController extends Controller
     public function create(): View
     {
         $this->requireActiveUser();
-        $categories = Category::orderBy('name')->get();
+        $categories = $this->sortedCategories();
         return view('recipes.create', compact('categories'));
     }
 
@@ -107,7 +109,7 @@ class RecipeController extends Controller
         $this->syncTags($recipe, $data['tags'] ?? '');
 
         return redirect()->route('recipes.show', $recipe)
-            ->with('success', 'Recepte veiksmīgi pievienota!');
+            ->with('success', __('app.recipe_created'));
     }
 
     /**
@@ -149,7 +151,7 @@ class RecipeController extends Controller
         $this->syncTags($recipe, $data['tags'] ?? '');
 
         return redirect()->route('recipes.show', $recipe)
-            ->with('success', 'Recepte atjaunināta!');
+            ->with('success', __('app.recipe_updated'));
     }
 
     /**
@@ -158,7 +160,7 @@ class RecipeController extends Controller
     public function edit(Recipe $recipe): View
     {
         Gate::authorize('update', $recipe);
-        $categories = Category::orderBy('name')->get();
+        $categories = $this->sortedCategories();
         $recipe->load('tags');
         return view('recipes.edit', compact('recipe', 'categories'));
     }
@@ -171,10 +173,17 @@ class RecipeController extends Controller
         Gate::authorize('delete', $recipe);
         $recipe->delete();   // soft delete
         return redirect()->route('recipes.index')
-            ->with('success', 'Recepte izdzēsta.');
+            ->with('success', __('app.recipe_deleted'));
     }
 
     // ── Private helpers ──────────────────────────────────────────────────────
+
+    private function sortedCategories()
+    {
+        return Category::orderBy('name')->get()
+            ->sortBy(fn ($cat) => $cat->localized_name)
+            ->values();
+    }
 
     private function syncTags(Recipe $recipe, string $rawTags): void
     {
@@ -196,6 +205,6 @@ class RecipeController extends Controller
     private function requireActiveUser(): void
     {
         abort_if(! Auth::check(), 401);
-        abort_if(Auth::user()->isBlocked(), 403, 'Jūsu konts ir bloķēts.');
+        abort_if(Auth::user()->isBlocked(), 403, __('app.account_blocked'));
     }
 }

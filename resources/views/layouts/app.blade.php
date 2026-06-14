@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="lv">
+<html lang="{{ app()->getLocale() }}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>@yield('title', 'Garšas Pasaule') — Receptes</title>
+<title>@yield('title', __('app.site_name')) — {{ __('app.page_title_recipes') }}</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 @stack('styles')
@@ -14,40 +14,41 @@
 <nav class="navbar">
   <div class="nav-inner">
     <a href="{{ route('recipes.index') }}" class="nav-brand">
-      Garšas Pasaule <span>receptes</span>
+      {{ __('app.site_name') }} <span>{{ __('app.site_suffix') }}</span>
     </a>
 
     {{-- Search --}}
     <form action="{{ route('recipes.index') }}" method="GET" class="nav-search">
-      <span class="nav-search-icon">&#9906;</span>
       <input type="text" name="search" value="{{ request('search') }}"
-             placeholder="Meklēt receptes, sastāvdaļas..." autocomplete="off">
+             placeholder="{{ __('app.search_placeholder') }}" autocomplete="off">
     </form>
 
     <div class="nav-links">
-      <a href="{{ route('recipes.index') }}" class="nav-btn {{ request()->routeIs('recipes.index') ? 'active' : '' }}">Receptes</a>
-
+      <div style="display:flex;gap:4px;margin-left:8px">
+  <a href="{{ route('lang.switch', 'lv') }}" class="nav-btn {{ app()->getLocale() === 'lv' ? 'active' : '' }}" style="padding:7px 10px">LV</a>
+  <a href="{{ route('lang.switch', 'en') }}" class="nav-btn {{ app()->getLocale() === 'en' ? 'active' : '' }}" style="padding:7px 10px">EN</a>
+</div>
+      <a href="{{ route('recipes.index') }}" class="nav-btn {{ request()->routeIs('recipes.index') ? 'active' : '' }}">{{ __('app.recipes') }}</a>
       @guest
-        <a href="{{ route('login') }}" class="nav-btn">Pieslēgties</a>
-        <a href="{{ route('register') }}" class="nav-btn primary">Reģistrēties</a>
+        <a href="{{ route('login') }}" class="nav-btn">{{ __('app.login') }}</a>
+        <a href="{{ route('register') }}" class="nav-btn primary">{{ __('app.register') }}</a>
       @endguest
-
       @auth
         @if(! auth()->user()->isBlocked())
-          <a href="{{ route('recipes.create') }}" class="nav-btn">+ Pievienot</a>
+          <a href="{{ route('recipes.create') }}" class="nav-btn">{{ __('app.add_recipe') }}</a>
         @endif
         <a href="{{ route('profile') }}" class="nav-btn">
-          Profils
+          {{ __('app.profile') }}
           <span class="role-badge {{ auth()->user()->isAdmin() ? 'role-admin' : 'role-user' }}">
-            {{ auth()->user()->isAdmin() ? 'Admin' : 'Lietotājs' }}
+            {{ auth()->user()->isAdmin() ? __('app.admin') : __('app.registered_user') }}
           </span>
         </a>
         @if(auth()->user()->isAdmin())
-          <a href="{{ route('admin.index') }}" class="nav-btn">&#9881; Admin</a>
+          <a href="{{ route('admin.index') }}" class="nav-btn">{{ __('app.admin') }}</a>
         @endif
         <form method="POST" action="{{ route('logout') }}" style="display:inline">
           @csrf
-          <button type="submit" class="nav-btn">Iziet</button>
+          <button type="submit" class="nav-btn">{{ __('app.logout') }}</button>
         </form>
       @endauth
     </div>
@@ -69,7 +70,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>Garšas Pasaule &copy; {{ date('Y') }} — Recepšu platforma</p>
+    <p>{{ __('app.site_name') }} &copy; {{ date('Y') }} — {{ __('app.footer') }}</p>
   </div>
 </footer>
 

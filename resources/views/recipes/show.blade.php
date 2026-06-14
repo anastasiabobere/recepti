@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container" style="padding-top:1.5rem">
-  <a href="{{ route('recipes.index') }}" class="back-btn">&#8592; Atpakaļ uz receptēm</a>
+  <a href="{{ route('recipes.index') }}" class="back-btn">{{ __('app.back_to_recipes') }}</a>
 
   <div class="recipe-detail">
     {{-- Header --}}
@@ -14,30 +14,30 @@
          style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)">
   @else
     <img src="{{ asset('images/placeholder.jpg') }}"
-         alt="Nav attēla"
+         alt="{{ __('app.no_image') }}"
          style="width:100%;height:100%;object-fit:cover;border-radius:var(--radius-lg)">
   @endif
 </div>
 
     <div class="recipe-detail-header">
       <div>
-        <div class="recipe-cat-label">{{ $recipe->category->emoji }} {{ $recipe->category->name }}</div>
+        <div class="recipe-cat-label">{{ $recipe->category->localized_name }}</div>
         <h1 class="recipe-detail-title">{{ $recipe->title }}</h1>
         <div class="recipe-detail-meta">
-          <span>👤 {{ $recipe->user->name }}</span>
+          <span>{{ $recipe->user->name }}</span>
           @if($recipe->cook_time)
-            <span>⏱ {{ $recipe->cook_time }}</span>
+            <span>{{ $recipe->cook_time }}</span>
           @endif
-          <span>📅 {{ $recipe->created_at->format('d.m.Y') }}</span>
+          <span>{{ $recipe->created_at->format('d.m.Y') }}</span>
         </div>
       </div>
       @can('update', $recipe)
         <div style="display:flex;gap:.5rem;margin-top:.75rem">
-          <a href="{{ route('recipes.edit', $recipe) }}" class="btn btn-secondary btn-sm">Rediģēt</a>
+          <a href="{{ route('recipes.edit', $recipe) }}" class="btn btn-secondary btn-sm">{{ __('app.edit') }}</a>
           <form method="POST" action="{{ route('recipes.destroy', $recipe) }}"
-                onsubmit="return confirm('Vai tiešām dzēst šo recepti?')">
+                onsubmit="return confirm(@json(__('app.confirm_delete_recipe')))">
             @csrf @method('DELETE')
-            <button class="btn btn-danger btn-sm">Dzēst</button>
+            <button class="btn btn-danger btn-sm">{{ __('app.delete') }}</button>
           </form>
         </div>
       @endcan
@@ -54,7 +54,7 @@
 
     {{-- Ingredients --}}
     <div class="detail-section">
-      <h3>Sastāvdaļas</h3>
+      <h3>{{ __('app.ingredients') }}</h3>
       <ul class="ingredients-list">
         @foreach($recipe->ingredients as $ingredient)
           <li><span class="ing-dot"></span>{{ $ingredient }}</li>
@@ -64,7 +64,7 @@
 
     {{-- Description --}}
     <div class="detail-section">
-      <h3>Pagatavošana</h3>
+      <h3>{{ __('app.preparation') }}</h3>
       <div class="recipe-description">{{ $recipe->description }}</div>
     </div>
 
@@ -72,7 +72,7 @@
 
     {{-- ── Ratings & Comments ── --}}
     <div class="ratings-section">
-      <h2>Vērtējumi un komentāri</h2>
+      <h2>{{ __('app.ratings_comments') }}</h2>
 
       {{-- Rating summary --}}
       @php
@@ -87,9 +87,9 @@
           <div class="rating-big">
             <div class="rating-num">{{ number_format($allAvg, 1) }}</div>
             <div class="rating-stars">{{ str_repeat('★', round($allAvg)) }}{{ str_repeat('☆', 5 - round($allAvg)) }}</div>
-            <div class="rating-count">{{ $totalCount }} vērtējum{{ $totalCount === 1 ? 's' : 'i' }}</div>
+            <div class="rating-count">{{ trans_choice('app.rating_count', $totalCount, ['count' => $totalCount]) }}</div>
             @if($cookedComments->count())
-              <div class="cooked-note">🍳 {{ $cookedComments->count() }} gatavojis</div>
+              <div class="cooked-note">{{ trans_choice('app.cooked_count_short', $cookedComments->count(), ['count' => $cookedComments->count()]) }}</div>
             @endif
           </div>
           <div class="rating-bars">
@@ -108,20 +108,19 @@
 
       {{-- Info about the split --}}
       <div class="info-box" style="margin-bottom:1.25rem">
-        🍳 <strong>Gatavojuši</strong> — vērtējumi no tiem, kuri tiešām pagatavoja šo recepti (rādīti pirmie).<br>
-        👁 <strong>Apskatījuši</strong> — vērtējumi no tiem, kuri recepti vērtēja bez gatavošanas.
+        {!! __('app.split_explanation_html') !!}
       </div>
 
       {{-- Tab buttons --}}
       <div class="rating-tabs" role="tablist">
         <button class="rating-tab active" onclick="switchTab('cooked', this)">
-          🍳 Gatavojuši ({{ $cookedComments->count() }})
+          {{ __('app.tab_cooked_count', ['count' => $cookedComments->count()]) }}
         </button>
         <button class="rating-tab" onclick="switchTab('tasted', this)">
-          👁 Apskatījuši ({{ $otherComments->count() }})
+          {{ __('app.tab_tasted_count', ['count' => $otherComments->count()]) }}
         </button>
         <button class="rating-tab" onclick="switchTab('all', this)">
-          Visi ({{ $totalCount }})
+          {{ __('app.tab_all_count', ['count' => $totalCount]) }}
         </button>
       </div>
 
@@ -130,7 +129,7 @@
         @forelse($cookedComments as $c)
           @include('components.comment-card', ['comment' => $c])
         @empty
-          <p class="no-comments">Vēl neviens nav atstājis vērtējumu pēc gatavošanas.</p>
+          <p class="no-comments">{{ __('app.no_cooked_comments') }}</p>
         @endforelse
       </div>
 
@@ -138,7 +137,7 @@
         @forelse($otherComments as $c)
           @include('components.comment-card', ['comment' => $c])
         @empty
-          <p class="no-comments">Vēl nav vērtējumu no apskatītājiem.</p>
+          <p class="no-comments">{{ __('app.no_tasted_comments') }}</p>
         @endforelse
       </div>
 
@@ -146,7 +145,7 @@
         @forelse($allComments as $c)
           @include('components.comment-card', ['comment' => $c])
         @empty
-          <p class="no-comments">Vēl nav neviena komentāra.</p>
+          <p class="no-comments">{{ __('app.no_comments') }}</p>
         @endforelse
       </div>
 
@@ -155,12 +154,12 @@
         @if(! $userHasCommented)
           @include('components.comment-form', ['recipe' => $recipe])
         @else
-          <div class="info-box">Jūs jau esat atstājis vērtējumu šai receptei. Paldies!</div>
+          <div class="info-box">{{ __('app.already_rated') }}</div>
         @endif
       @else
         <div class="add-comment-box" style="text-align:center;padding:2rem">
-          <p style="color:var(--text-muted);margin-bottom:1rem">Lai komentētu vai vērtētu, lūdzu pieslēdzies.</p>
-          <a href="{{ route('login') }}" class="btn btn-primary">Pieslēgties</a>
+          <p style="color:var(--text-muted);margin-bottom:1rem">{{ __('app.login_to_comment') }}</p>
+          <a href="{{ route('login') }}" class="btn btn-primary">{{ __('app.login') }}</a>
         </div>
       @endauth
     </div>
