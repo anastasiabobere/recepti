@@ -49,16 +49,24 @@
         @endif
         </div>
       </div>
-      @can('update', $recipe)
-        <div style="display:flex;gap:.5rem;margin-top:.75rem">
+      <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap">
+        @auth
+          <form method="POST" action="{{ route('recipes.toggle-save', $recipe) }}">
+            @csrf
+            <button class="btn {{ $isSaved ? 'btn-secondary' : 'btn-primary' }} btn-sm">
+              {{ $isSaved ? __('app.unsave_recipe') : __('app.save_recipe_action') }}
+            </button>
+          </form>
+        @endauth
+        @can('update', $recipe)
           <a href="{{ route('recipes.edit', $recipe) }}" class="btn btn-secondary btn-sm">{{ __('app.edit') }}</a>
           <form method="POST" action="{{ route('recipes.destroy', $recipe) }}"
                 onsubmit="return confirm(@json(__('app.confirm_delete_recipe')))">
             @csrf @method('DELETE')
             <button class="btn btn-danger btn-sm">{{ __('app.delete') }}</button>
           </form>
-        </div>
-      @endcan
+        @endcan
+      </div>
     </div>
 
     {{-- Tags --}}

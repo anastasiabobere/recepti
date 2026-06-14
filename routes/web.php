@@ -7,13 +7,13 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\TranslationController;
+use App\Http\Controllers\SavedRecipeController;
 
 Route::get('/receptes/{recipe}/translate', [TranslationController::class, 'translate'])->name('recipes.translate');
 
 Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
 // ── Public routes ────────────────────────────────────────────────────────────
 Route::get('/', [RecipeController::class, 'index'])->name('recipes.index');
-
 Route::middleware(['auth'])->group(function () {
     Route::get('/receptes/create', [RecipeController::class, 'create'])->name('recipes.create');
 });
