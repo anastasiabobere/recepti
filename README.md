@@ -1,58 +1,194 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Receptes Platforma
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Anastasija Bobere, ab25286
 
-## About Laravel
+## Projekta apraksts
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Šī projekta ietvaros tiek izstrādāta interneta recepšu platforma, kas ļauj lietotājiem pievienot, pārvaldīt un koplietot receptes. Platforma paredzēta ēdienu gatavošanas entuziastiem, kuri vēlas glabāt savas receptes, meklēt citu lietotāju publicēto saturu un iesaistīties kopienā.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Izstrādes platforma
 
-## Learning Laravel
+Sistēma izstrādāta, izmantojot:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- **PHP 8.3**
+- **Laravel Framework**
+- **MySQL** datubāzi
+- **GitHub** koda versiju kontrolei
+- **Railway** aplikācijas izvietošanai (deployment)
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## Galvenā funkcionalitāte
 
-## Agentic Development
+Sistēma ļauj lietotājiem:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- pievienot receptes (ar sastāvdaļām, aprakstu un attēliem);
+- sadalīt receptes kategorijās
+  (piemēram: deserti, zupas, brokastis, vegāniskie ēdieni);
+- pievienot atslēgas vārdus (tags)
+  (piemēram: medus kūka, siļķe kažokā, ābolu pīrāgs, rosols);
+- meklēt receptes pēc:
+    - nosaukuma
+    - sastāvdaļām
+    - kategorijas
 
-```bash
-composer require laravel/boost --dev
+- skatīt citu lietotāju receptes;
+- vērtēt receptes;
+- komentēt receptes.
 
-php artisan boost:install
-```
+---
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Biznesa joma
 
-## Contributing
+Aplikācija darbojas **ēdienu un dzīvesstila digitālajā jomā**, piedāvājot platformu recepšu glabāšanai un koplietošanai.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Galvenie uzdevumi:
 
-## Code of Conduct
+- vienkāršot recepšu pārvaldību;
+- veicināt lietotāju iesaisti (komentāri, vērtējumi);
+- nodrošināt ērtu meklēšanu un filtrēšanu;
+- veidot kopienu ap ēdienu gatavošanu.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+## Datu reģistri
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Galvenie sistēmas objekti:
 
-## License
+- **User (Lietotājs)**
+- **Recipe (Recepte)**
+- **Category (Kategorija)**
+- **Tag (Atslēgas vārds)**
+- **Comment (Komentārs)**
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Attiecības starp datiem
+
+- Viens lietotājs var izveidot vairākas receptes.
+- Viena recepte pieder vienai kategorijai.
+- Vienai receptei var būt vairāki atslēgas vārdi.
+- Vienai receptei var būt vairāki komentāri.
+- Katrs komentārs pieder konkrētam lietotājam.
+
+---
+
+## Lietotāju lomas
+
+### Vienkāršs apmeklētājs
+
+Var:
+
+- apskatīt publiskās receptes;
+- izmantot meklēšanu.
+
+### Reģistrēts lietotājs
+
+Var:
+
+- pievienot receptes;
+- rediģēt savas receptes;
+- dzēst savas receptes;
+- komentēt receptes;
+- vērtēt receptes;
+- pievienot atslēgas vārdus.
+
+### Administrators
+
+Var:
+
+- pārvaldīt visas receptes;
+- dzēst nepiemērotu saturu;
+- bloķēt lietotājus.
+
+---
+
+## Tipiskie lietošanas scenāriji
+
+### 1. Recepšu pārlūkošana
+
+Apmeklētājs atver mājaslapu un meklē recepti pēc atslēgvārda, piemēram, **“pankūkas”**. Sistēma parāda atbilstošos rezultātus.
+
+### 2. Receptes pievienošana
+
+Reģistrēts lietotājs piesakās sistēmā, aizpilda receptes formu (nosaukums, sastāvdaļas, apraksts) un saglabā recepti.
+
+### 3. Komentēšana
+
+Lietotājs atver recepti un pievieno komentāru.
+
+### 4. Satura moderācija
+
+Administrators atrod neatbilstošu saturu un dzēš to no sistēmas.
+
+---
+
+## Sistēmas arhitektūra (MVC)
+
+### Modeļi (Models)
+
+- User
+- Recipe
+- Category
+- Tag
+- Comment
+
+### Skati (Views)
+
+- sākumlapa (recepšu saraksts)
+- receptes detalizētais skats
+- receptes pievienošanas forma
+- lietotāja profils
+
+### Kontrolleri (Controllers)
+
+- RecipeController
+- UserController
+- CommentController
+- AdminController
+
+---
+
+## Sistēmas saskarne
+
+Receptes detalizētajā skatā lietotājs var:
+
+- izlasīt receptes aprakstu;
+- apskatīt komentārus;
+- atrast citas tā paša lietotāja receptes;
+- pāriet uz:
+    - galveno lapu
+    - savu profilu
+    - citām receptēm
+
+---
+
+## API Integrācijas
+
+Projektā tiek izmantota ārēja API integrācija:
+
+### MyMemory Translation API
+
+**MyMemory Translation API** tiek izmantots teksta tulkošanas funkcionalitātei, ļaujot nepieciešamības gadījumā tulkot receptes vai lietotāju saturu dažādās valodās.
+
+---
+
+## Izvietošana (Deployment)
+
+Aplikācija tiek izvietota, izmantojot **Railway**, kas nodrošina:
+
+- vienkāršu deployment procesu;
+- servera hostingu;
+- datubāzes savienojamību;
+- automātisku atjauninājumu izvietošanu.
+
+---
+
+## Acknowledgements
+
+- Laravel
+- PHP
+- MySQL
+- GitHub
+- MyMemory Translation API
+- Railway
