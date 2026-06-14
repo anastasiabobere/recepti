@@ -53,6 +53,12 @@ class Recipe extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
+    public function savedByUsers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'saved_recipes')
+            ->withTimestamps();
+    }
+
     // ── Scopes ──────────────────────────────────────────────────────────────
 
     /** Only published recipes visible to guests */

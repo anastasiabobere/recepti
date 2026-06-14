@@ -8,7 +8,7 @@
   <div class="comment-header">
     <div class="comment-avatar {{ $comment->has_cooked ? 'cooked' : 'tasted' }}">{{ $initials }}</div>
     <div>
-      <div class="comment-name">{{ $comment->user->name }}</div>
+          <div class="comment-name"><a href="{{ route('users.show', $comment->user) }}">{{ $comment->user->name }}</a></div>
       <div class="comment-stars">
         {{ str_repeat('★', $comment->rating) }}{{ str_repeat('☆', 5 - $comment->rating) }}
         <span style="color:var(--text-faint);font-size:11px">{{ $comment->rating }}/5</span>

@@ -17,12 +17,18 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/receptes/{recipe}', [RecipeController::class, 'show'])->name('recipes.show');
 
+Route::get('/lietotaji/{user}', [UserController::class, 'show'])->name('users.show');
+
 // ── Auth routes ───────────────────────────────────────────────────────────────
 require __DIR__.'/auth.php';
 
 // ── Authenticated user routes ─────────────────────────────────────────────────
 Route::middleware(['auth'])->group(function () {
     Route::get('/profils', [UserController::class, 'profile'])->name('profile');
+
+    Route::post('/lietotaji/{user}/follow', [UserController::class, 'follow'])->name('users.follow');
+    Route::delete('/lietotaji/{user}/follow', [UserController::class, 'unfollow'])->name('users.unfollow');
+    Route::post('/receptes/{recipe}/save', [UserController::class, 'toggleSave'])->name('recipes.toggle-save');
 
     Route::post('/receptes', [RecipeController::class, 'store'])->name('recipes.store');
     Route::get('/receptes/{recipe}/edit', [RecipeController::class, 'edit'])->name('recipes.edit');

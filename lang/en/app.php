@@ -17,6 +17,8 @@ return [
     'admin'              => 'Admin',
     'logout'             => 'Log out',
     'search_placeholder' => 'Search recipes, ingredients...',
+    'menu'               => 'Menu',
+    'close_menu'         => 'Close menu',
 
     // Home page
     'hero_title'         => 'Discover a world of :word',
@@ -93,6 +95,24 @@ return [
     'registered_user'    => 'Registered user',
     'administrator'      => 'Administrator',
     'recipes_count_label'=> 'Recipes',
+    'user_profile_title' => ':name\'s profile',
+    'user_recipes'       => 'Recipes',
+    'no_user_recipes'    => 'No recipes yet.',
+    'saved_recipes'      => 'Saved recipes',
+    'no_saved_recipes'   => 'No saved recipes yet.',
+    'followers'          => 'Followers',
+    'following'          => 'Following',
+    'follow'             => 'Follow',
+    'unfollow'           => 'Unfollow',
+    'no_followers'       => 'No followers yet.',
+    'no_following'       => 'Not following anyone yet.',
+    'followed_user'      => 'You are now following :name.',
+    'unfollowed_user'    => 'You unfollowed :name.',
+    'cannot_follow_self' => 'You cannot follow yourself.',
+    'save_recipe'        => 'Save recipe',
+    'unsave_recipe'      => 'Remove from saved',
+    'recipe_saved'       => 'Recipe saved to your profile.',
+    'recipe_unsaved'     => 'Recipe removed from saved.',
 
     // Admin
     'admin_panel'        => 'Administration',

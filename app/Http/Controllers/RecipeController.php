@@ -54,11 +54,14 @@ class RecipeController extends Controller
 
         $userHasCommented = Auth::check() && Auth::user()->hasCommentedOn($recipe);
 
+        $isSaved = Auth::check() && Auth::user()->hasSaved($recipe);
+
         return view('recipes.show', compact(
             'recipe',
             'cookedComments',
             'otherComments',
-            'userHasCommented'
+            'userHasCommented',
+            'isSaved',
         ));
     }
 

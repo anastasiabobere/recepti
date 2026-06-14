@@ -17,6 +17,8 @@ return [
     'admin'              => 'Admin',
     'logout'             => 'Iziet',
     'search_placeholder' => 'Meklēt receptes, sastāvdaļas...',
+    'menu'               => 'Izvēlne',
+    'close_menu'         => 'Aizvērt izvēlni',
 
     // Home page
     'hero_title'         => 'Atklāj :word pasauli',
@@ -93,6 +95,24 @@ return [
     'registered_user'    => 'Reģistrēts lietotājs',
     'administrator'      => 'Administrators',
     'recipes_count_label'=> 'Receptes',
+    'user_profile_title' => ':name profils',
+    'user_recipes'       => 'Receptes',
+    'no_user_recipes'    => 'Vēl nav nevienas receptes.',
+    'saved_recipes'      => 'Saglabātās receptes',
+    'no_saved_recipes'   => 'Vēl nav saglabātu recepšu.',
+    'followers'          => 'Sekotāji',
+    'following'          => 'Seko',
+    'follow'             => 'Sekot',
+    'unfollow'           => 'Atcelt sekošanu',
+    'no_followers'       => 'Vēl nav sekotāju.',
+    'no_following'       => 'Vēl nevienam neseko.',
+    'followed_user'      => 'Tu tagad seko lietotājam :name.',
+    'unfollowed_user'    => 'Tu vairs neseko lietotājam :name.',
+    'cannot_follow_self' => 'Tu nevari sekot pats sev.',
+    'save_recipe'        => 'Saglabāt recepti',
+    'unsave_recipe'      => 'Noņemt no saglabātajām',
+    'recipe_saved'       => 'Recepte saglabāta tavā profilā.',
+    'recipe_unsaved'     => 'Recepte noņemta no saglabātajām.',
 
     // Admin
     'admin_panel'        => 'Administrācija',

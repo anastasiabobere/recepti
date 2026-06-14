@@ -24,15 +24,26 @@
         <div class="recipe-cat-label">{{ $recipe->category->localized_name }}</div>
         <h1 class="recipe-detail-title">{{ $recipe->title }}</h1>
         <div class="recipe-detail-meta">
-          <span>{{ $recipe->user->name }}</span>
+          <span>{{ __('app.by_author') }} <a href="{{ route('users.show', $recipe->user) }}">{{ $recipe->user->name }}</a></span>
           @if($recipe->cook_time)
             <span>{{ $recipe->cook_time }}</span>
           @endif
           <span>{{ $recipe->created_at->format('d.m.Y') }}</span>
         </div>
       </div>
+      <div style="display:flex;gap:.5rem;margin-top:.75rem;flex-wrap:wrap;align-items:center">
+      @auth
+        @if(! auth()->user()->isBlocked())
+          <form method="POST" action="{{ route('recipes.toggle-save', $recipe) }}">
+            @csrf
+            <button type="submit" class="btn {{ $isSaved ? 'btn-secondary' : 'btn-primary' }} btn-sm">
+              {{ $isSaved ? __('app.unsave_recipe') : __('app.save_recipe') }}
+            </button>
+          </form>
+        @endif
+      @endauth
       @can('update', $recipe)
-        <div style="display:flex;gap:.5rem;margin-top:.75rem">
+        <div style="display:flex;gap:.5rem">
           <a href="{{ route('recipes.edit', $recipe) }}" class="btn btn-secondary btn-sm">{{ __('app.edit') }}</a>
           <form method="POST" action="{{ route('recipes.destroy', $recipe) }}"
                 onsubmit="return confirm(@json(__('app.confirm_delete_recipe')))">
@@ -41,6 +52,7 @@
           </form>
         </div>
       @endcan
+      </div>
     </div>
 
     {{-- Tags --}}
