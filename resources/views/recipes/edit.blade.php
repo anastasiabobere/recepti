@@ -7,7 +7,9 @@
     <a href="{{ route('recipes.show', $recipe) }}" class="back-btn">&#8592; Atpakaļ uz recepti</a>
     <h2>Rediģēt: {{ $recipe->title }}</h2>
 
-<form method="POST" action="{{ route('recipes.update', $recipe) }}" enctype="multipart/form-data">      @method('PUT')
+<form method="POST" action="{{ route('recipes.update', $recipe) }}" enctype="multipart/form-data">
+      @csrf
+      @method('PUT')
       @include('recipes._form', ['recipe' => $recipe])
       <div class="form-actions">
         <a href="{{ route('recipes.show', $recipe) }}" class="btn btn-secondary">Atcelt</a>
