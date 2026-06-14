@@ -66,7 +66,7 @@ class DatabaseSeeder extends Seeder
             'description' => "Mīksts un sulīgs ābolu pīrāgs ar kanēļa aromātu.\n\nSagriez ābolus šķēlītēs, pārkaisi ar kanēli un cukuru. Sagatavo mīklu no miltiem, sviestas, olām un cukura. Liec formā kārtām — mīkla, āboli, mīkla. Cep 180°C 50 minūtes.",
             'ingredients' => ['500g ābolu','200g miltu','150g cukura','100g sviestas','2 olas','1 tēk. kanēļa','1 tēk. cepamā pulvera'],
             'cook_time'   => '1 st 20 min',
-            'image_path'  => 'recipes/abolu-pirags.jpg',
+            'image_path'  => 'images/recipes/abolu-pirags.jpg',
             'user_id'     => $anna->id,
             'category_id' => $deserti->id,
         ]);
@@ -77,7 +77,7 @@ class DatabaseSeeder extends Seeder
             'description' => "Tradicionālā latviešu biešu zupa ar krējumu un dillēm.\n\nNomizo bietes un burkānus, sagriez kubiņos. Uz vidējas uguns apcep sīpolus. Pievieno dārzeņus un ūdeni, vāri 30 min. Sezonē pēc garšas.",
             'ingredients' => ['4 bietes','2 burkāni','1 sīpols','3 kartupeļi','Skābs krējums','Dilles','Sāls, pipari'],
             'cook_time'   => '45 min',
-            'image_path'  => 'recipes/biesu-zupa.jpg',
+            'image_path'  => 'images/recipes/biesu-zupa.jpg',
             'user_id'     => $peteris->id,
             'category_id' => $zupas->id,
         ]);
@@ -88,7 +88,7 @@ class DatabaseSeeder extends Seeder
             'description' => "Ātras un veselīgas brokastis jebkurai dienai.\n\nUzvāri ūdeni vai pienu, pievieno auzu pārslas, vāri 5 min. Pasniedz ar svaigām ogām un medu.",
             'ingredients' => ['80g auzu pārslu','250ml piena','Sezonālas ogas','1 ēd. k. medus','Šķipsniņa sāls'],
             'cook_time'   => '10 min',
-            'image_path'  => 'recipes/biezputra.jpg',
+            'image_path'  => 'images/recipes/biezputra.jpg',
             'user_id'     => $anna->id,
             'category_id' => $brok->id,
         ]);
@@ -99,7 +99,7 @@ class DatabaseSeeder extends Seeder
             'description' => "Krāsains un barojošs vegāniskais ēdiens.\n\nSagriez dārzeņus, apkaisi ar olīveļļu un garšvielām. Cep 200°C 25 min. Uzkaisi vārītus aunazirņus.",
             'ingredients' => ['2 cukini','1 sarkanā paprika','1 sarkansīpols','400g aunazirņu (konservi)','3 ēd. k. olīveļļas','Kurkuma, paprika, ķimenes'],
             'cook_time'   => '35 min',
-            'image_path'  => 'recipes/darzeni.jpg',
+            'image_path'  => 'images/recipes/darzeni.jpg',
             'user_id'     => $lauma->id,
             'category_id' => $vegan->id,
         ]);
@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
             'description' => "Klasiskā Jaungada salātu recepte.\n\nSavāri dārzeņus. Sagriez siļķi. Krāso kārtas bļodā: kartupeļi, siļķe, burkāns, biete, majonēze. Atdzesē 2 stundas.",
             'ingredients' => ['2 siļķes fileja','3 vārīti kartupeļi','2 vārīti burkāni','2 vārītas bietes','Majonēze','Sīpols'],
             'cook_time'   => '30 min + 2 st atdzišanai',
-            'image_path'  => 'recipes/silke-kazoka.jpg',
+            'image_path'  => 'images/recipes/silke-kazoka.jpg',
             'user_id'     => $peteris->id,
             'category_id' => $galv->id,
         ]);
@@ -121,7 +121,7 @@ class DatabaseSeeder extends Seeder
             'description' => "Mitri un bagātīgi šokolādes brauniji.\n\nIzkausē šokolādi ar sviestu. Sajauc cukuru, olas, vanilju. Pievieno miltus. Cep 175°C 25 min. Svarīgi: neapcept par daudz!",
             'ingredients' => ['200g tumšās šokolādes','150g sviestas','200g cukura','3 olas','100g miltu','30g kakao','1 tēk. vaniljes'],
             'cook_time'   => '40 min',
-            'image_path'  => 'recipes/brauniji.jpg',
+            'image_path'  => 'images/recipes/brauniji.jpg',
             'user_id'     => $lauma->id,
             'category_id' => $deserti->id,
         ]);

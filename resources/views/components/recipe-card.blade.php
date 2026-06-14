@@ -13,7 +13,12 @@
   <a href="{{ route('recipes.show', $recipe) }}" class="recipe-card-img-link">
     <div class="recipe-card-img">
       @if($recipe->image_path)
-        <img src="{{ asset('storage/' . $recipe->image_path) }}"
+        @php
+          $imgUrl = str_starts_with($recipe->image_path, 'images/')
+              ? asset($recipe->image_path)
+              : asset('storage/' . $recipe->image_path);
+        @endphp
+        <img src="{{ $imgUrl }}"
              alt="{{ $recipe->title }}"
              style="width:100%;height:100%;object-fit:cover">
       @else
